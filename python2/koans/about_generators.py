@@ -19,7 +19,7 @@ class AboutGenerators(Koan):
                 n in ['crunchy', 'veggie', 'danish'])
         for bacon in bacon_generator:
             result.append(bacon)
-        self.assertEqual('crunchy bacon', result)
+        self.assertEqual(['crunchy bacon', 'veggie bacon', 'danish bacon'], result)
             
     def test_generators_are_different_to_list_comprehensions(self):
         num_list = [x * 2 for x in range(1, 3)]
@@ -44,7 +44,7 @@ class AboutGenerators(Koan):
         attempt2 = list(dynamite)
         
         self.assertEqual(['Boom!', 'Boom!', 'Boom!'], list(attempt1))
-        self.assertEqual(['Boom!', 'Boom!', 'Boom!'], list(attempt2))
+        self.assertEqual([], list(attempt2))
     
     # ------------------------------------------------------------------
     
@@ -58,7 +58,7 @@ class AboutGenerators(Koan):
         result = list()
         for item in self.simple_generator_method():
             result.append(item)
-        self.assertEqual('peanut', result)
+        self.assertEqual(['peanut', 'butter', 'and', 'jelly'], result)
 
     def test_coroutines_can_take_arguments(self):
         result = self.simple_generator_method()
@@ -74,7 +74,7 @@ class AboutGenerators(Koan):
 
     def test_generator_method_with_parameter(self):
         result = self.square_me(range(2, 5))
-        self.assertEqual([4, 9, 16, 25], list(result))
+        self.assertEqual([4, 9, 16], list(result))
 
     # ------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ class AboutGenerators(Koan):
 
     def test_generator_keeps_track_of_local_variables(self):
         result = self.sum_it(range(2, 5))
-        self.assertEqual([2, 6, 10, 15], list(result))
+        self.assertEqual([2, 5, 9], list(result))
 
     # ------------------------------------------------------------------
         
@@ -113,7 +113,7 @@ class AboutGenerators(Koan):
         try:
             generator.send(1 + 2)
         except TypeError as ex:
-            self.assertMatch(None, ex[0])
+            self.assertMatch("can't send non-None value to a just-started generator", ex[0])
 
     # ------------------------------------------------------------------
     
@@ -138,4 +138,4 @@ class AboutGenerators(Koan):
         
         next(generator)
         # 'next(generator)' is exactly equivalent to 'generator.send(None)'
-        self.assertEqual('with value', generator.send(None))
+        self.assertEqual('no value', generator.send(None))
