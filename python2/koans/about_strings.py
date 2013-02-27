@@ -49,7 +49,7 @@ class AboutStrings(Koan):
             Howdy,
             world!
             """
-        self.assertEqual(15, len(string))
+        self.assertEqual(51, len(string))
     
     def test_triple_quoted_strings_need_less_escaping(self):
         a = "Hello \"world\"."
